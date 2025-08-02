@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PaşaQuiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      padding: 30px;
+    }
+    .quiz-box {
+      background: white;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    .answers button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #007bff;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .answers button:hover {
+      background: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h1>PaşaQuiz</h1>
+    <div class="question" id="question">Soru yükleniyor...</div>
+    <div class="answers" id="answers"></div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const quiz = [
+      {
+        question: "Rize'de en çok hangi ürün yetişir?",
+        answers: ["Fındık", "Çay", "Mısır", "Limon"],
+        correct: 1
+      },
+      {
+        question: "En büyük gezegen hangisidir?",
+        answers: ["Mars", "Dünya", "Jüpiter", "Güneş"],
+        correct: 2
+      },
+      {
+        question: "Tokubelt ne işe yarar?",
+        answers: ["Çay demlemek", "Karın doyurmak", "Tokluk hissi vermek", "Kemer yerine lastik"],
+        correct: 2
+      },
+      {
+        question: "Lazlar ne zaman hızlı konuşur?",
+        answers: ["Uyurken", "Öfkelenince", "Yemek yerken", "Susarken"],
+        correct: 1
+      },
+      {
+        question: "Hangi hayvan \"miyav\" der?",
+        answers: ["Tavuk", "Balık", "Kedi", "Timsah"],
+        correct: 2
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      if (current >= quiz.length) {
+        document.getElementById('question').innerText = "Test bitti!";
+        document.getElementById('answers').innerHTML = "Skorun: " + score + "/" + quiz.length + ".\n" +
+          (score >= 4 ? "Zekân Google'ı korkuttu!" : "Fena değil paşa, biraz daha çalış.");
+        return;
+      }
+      document.getElementById('question').innerText = quiz[current].question;
+      const answersDiv = document.getElementById('answers');
+      answersDiv.innerHTML = "";
+      quiz[current].answers.forEach((ans, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = ans;
+        btn.onclick = () => checkAnswer(i);
+        answersDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(i) {
+      const resultDiv = document.getElementById('result');
+      if (i === quiz[current].correct) {
+        score++;
+        resultDiv.innerText = "✅ Vay be paşa! Doğru cevap.";
+      } else {
+        resultDiv.innerText = "❌ Oooo olmadı be...";
+      }
+      current++;
+      setTimeout(() => {
+        resultDiv.innerText = "";
+        showQuestion();
+      }, 1500);
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
